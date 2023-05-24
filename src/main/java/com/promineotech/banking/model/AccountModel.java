@@ -77,7 +77,10 @@ public class AccountModel {
 
   @Override
   public String toString() {
-    //TODO
-    throw new UnsupportedOperationException();
+    return "AccountModel [owner=" + getOwner() + 
+	       ", number=" + getNumber() + 
+		   ", balance=" + getBalance() + 
+		   ", lastTransaction=" + getLastTransaction() + 
+		   "]";
   }
 }

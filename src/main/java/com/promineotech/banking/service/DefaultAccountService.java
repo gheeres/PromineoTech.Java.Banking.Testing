@@ -18,8 +18,19 @@ public class DefaultAccountService implements AccountService {
   
   @Override
   public Response<AccountModel> open(String owner, Float initialDeposit) {
-    //TODO
-    throw new UnsupportedOperationException();
+	if ((owner == null) || (owner.isEmpty())) {
+      return Response.BadRequest("An invalid owner was specified.");
+	}
+	if (initialDeposit < MINIMUM_BALANCE_TO_OPEN_ACCOUNT) {
+      return Response.BadRequest(String.format("A minimum depost of $%f is required to open an account", MINIMUM_BALANCE_TO_OPEN_ACCOUNT));
+	}
+	
+	String accountNumber = accountNumberGenerator.generate();
+	AccountModel account = repository.save(accountNumber, owner, initialDeposit);
+	if (account != null) {
+	  return Response.OK(account, "Account created");	
+	}
+	return Response.Error("Account creation failed.");
   }
 
   @Override

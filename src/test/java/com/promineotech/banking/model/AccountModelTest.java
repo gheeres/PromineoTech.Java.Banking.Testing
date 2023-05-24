@@ -19,37 +19,78 @@ class AccountModelTest {
 
   @Test
   void testToStringWithAValidAccountModelReturnsString() {
-    //TODO
-    fail("Test not implemented.");
+	// Arrange
+	String expected = "AccountModel [owner=test, number=1111, balance=0.0, lastTransaction=null]";
+	AccountModel account = new AccountModel("1111", "test");			
+	  
+	// Act
+	String actual = account.toString();
+	  
+	// Assert
+	assertThat(actual).isEqualTo(expected);
   }
   
   @Test
   void testConstructorWithNullNumberThrowsException() {
-    //TODO
-    fail("Test not implemented.");
+	try {
+      // Create invalid account
+      AccountModel account = new AccountModel(null, "test");
+      fail("Account should not allow empty number");
+	}
+	catch(BankingException e) {
+	  // this is the expected or desired path
+	}
   }
 
   @Test
   void testConstructorWithNullOwnerThrowsException() {
-    //TODO
-    fail("Test not implemented.");
+    try {
+	  // Create invalid account
+	  AccountModel account = new AccountModel("1111", null);
+	  fail("Account should not allow empty owner");
+    }
+	catch(BankingException e) {
+	  // this is the expected or desired path
+    }
   }
   
   @Test
   void testSetOwnerWithNullThrowsException() {
-    //TODO
-    fail("Test not implemented.");
+    try {
+  	  AccountModel account = new AccountModel("1111", "test");
+  	  account.setOwner(null);
+
+  	  fail("Account should not allow empty owner");
+    }
+ 	catch(BankingException e) {
+ 	  // this is the expected or desired path
+    }
   }
   
   @Test
   void testConstructorWithNullParentThrowsException() {
-    //TODO
-    fail("Test not implemented.");
+	assertThatExceptionOfType(BankingException.class)
+	.isThrownBy(() -> {
+	  AccountModel account = new AccountModel(null);	
+	});
   }
 
   @Test
   void testConstructorWithNonNullParentCopiesValues() {
-    //TODO
-    fail("Test not implemented.");
+	// Arrange
+	String owner = "bob@bank.com";
+	String accountNumber = "9999999";
+	float balance = 101.1F;
+	AccountModel expected = new AccountModel(accountNumber, owner)
+			                    .setBalance(balance);
+	
+	// Act
+	AccountModel actual = new AccountModel(expected);
+	
+	// Assert
+	assertThat(actual.getOwner()).isEqualTo(expected.getOwner());
+	assertThat(actual.getNumber()).isEqualTo(expected.getNumber());
+	assertThat(actual.getBalance()).isEqualTo(expected.getBalance(), within(0.00001F));
+	assertThat(actual.getLastTransaction()).isEqualTo(expected.getLastTransaction());
   }
 }
